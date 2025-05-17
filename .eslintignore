@@ -1,0 +1,15 @@
+node_modules/
+build/
+dist/
+.next/
+coverage/
+public/
+*.config.js
+*.config.cjs
+*.config.mjs
+*.test.js
+*.test.jsx
+*.spec.js
+*.spec.jsx
+src/assets/
+.env* 
