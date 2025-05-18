@@ -199,7 +199,3 @@ const BookmarkPlay = ({ t }) => {
   )
 }
 export default withTranslation()(BookmarkPlay)
-
-export async function getServerSideProps() {
-  return { props: {} }
-}
