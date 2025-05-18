@@ -22,7 +22,7 @@ const Footer = () => {
     const SocialMedia = websettingsdata && websettingsdata.social_media;
 
     // footer logo
-    const footer_logo = '/logo.svg';
+    const footer_logo = websettingsdata && websettingsdata.footer_logo;
 
     // company text
     const company_text = websettingsdata && websettingsdata.company_text;
@@ -55,59 +55,90 @@ const Footer = () => {
                                 <Logo image={footer_logo} />
                             </div>
                             <div className="footer_left_text">
-                                <p><strong>Quiz Forge</strong> is a vibe coded project for the Outlier Vibe Coding Competition.<br />
-                                    <strong>Topic:</strong> EDUCATION - Quiz app with score at end and retry option.<br />
-                                    This platform is designed to make learning fun, interactive, and rewarding. Thank you for visiting!</p>
+                                <p>{company_text}</p>
+                            </div>
+                            <div className="two_images d-flex align-item-center flex-wrap">
+                                {appLink ?
+                                    <div className="playstore_img me-1">
+                                        <Link href="" onClick={() => window.open(appLink, '_blank')}>
+                                            <img src={palystoreimg.src} alt="playstore" />
+                                        </Link>
+                                    </div>
+                                    : null}
+                                {appiosLink ?
+                                    <div className="playstore_img iosimg">
+                                        <Link href="" onClick={() => window.open(appiosLink, '_blank')}>
+                                            <img src={appstoreimg.src} alt="ios" />
+                                        </Link>
+                                    </div>
+                                    : null}
                             </div>
                         </div>
                         <div className="col-md-6 col-lg-3  col-12 footer_left_second">
                             <div className="footer_title">
-                                <h4 className="footer_heading">Policy</h4>
+                                <h4 className="footer_heading">{t("policy")}</h4>
                             </div>
                             <ul className="footer_policy">
                                 <li className="footer_list">
-                                    <Link href="/privacy-policy">Privacy Policy</Link>
+                                    <Link href="/privacy-policy">{t("privacy_policy")}</Link>
                                 </li>
                                 <li className="footer_list">
-                                    <Link href="/terms-conditions">Terms and Conditions</Link>
+                                    <Link href="/terms-conditions">{t("t&c")}</Link>
                                 </li>
                             </ul>
                         </div>
                         <div className="col-md-6 col-lg-3  col-12 footer_right">
                             <div className="footer_title">
-                                <h4 className="footer_heading">Company</h4>
+                                <h4 className="footer_heading">{t("company")}</h4>
                             </div>
                             <ul className="footer_policy">
                                 <li className="footer_list">
-                                    <Link href="/about-us">About Us</Link>
+                                    <Link href="/about-us">{t("about_us")}</Link>
                                 </li>
                                 <li className="footer_list">
-                                    <Link href="/contact-us">Contact Us</Link>
+                                    <Link href="/contact-us">{t("contact_us")}</Link>
                                 </li>
                             </ul>
                         </div>
                         <div className="col-md-6 col-lg-3 col-12 footer_right">
                             <div className="footer_title">
-                                <h4 className="footer_heading">Find Us Here</h4>
+                                <h4 className="footer_heading">{t("find_us_here")}</h4>
                             </div>
                             <ul className="footer_policy">
-                                <li className="footer_list_address">Techno Main Salt Lake, Kolkata, India</li>
-                                <li className="footer_list_email">
-                                    <a href="mailto:ridhibratadas@gmail.com">ridhibratadas@gmail.com</a>
-                                </li>
-                                <li className="footer_list_number">
-                                    <a href="tel:+919733557339">+91 9733557339</a>
-                                </li>
+                                {address_text ?
+                                    <li className="footer_list_address">{address_text}</li>
+                                    : null}
+                                {email_footer ?
+                                    <li className="footer_list_email">
+                                        <Link href={`mailto:${email_footer}`}>{email_footer}</Link>
+                                    </li>
+                                    : null}
+                                {phone_number_footer ?
+                                    <li className="footer_list_number">
+                                        <Link href={`tel:${phone_number_footer}`}>{phone_number_footer}</Link>
+                                    </li>
+                                    : null}
                             </ul>
                             <ul className="footer_social">
-                                {/* You can add social links here if needed */}
+                                {SocialMedia && SocialMedia.map((data) => (
+                                    <li className="footer_social_list" key={data.link}>
+                                        <Link href={`${data.link}`} target="_blank">
+                                            <img src={data.icon} alt="social-media" />
+                                        </Link>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                     </div>
                     <hr />
+
                     <div className="footer_copyright text-center">
                         <p>
-                            Copyright © {new Date().getFullYear()} | Made by Ridhibrata Das
+                            {t("copyright")} © {new Date().getFullYear()}
+                            {" "}{t("made_by")}{" "}
+                            <Link href={`${web_link_footer}`} target="_blank">
+                                {company_name_footer}
+                            </Link>
                         </p>
                     </div>
                 </div>

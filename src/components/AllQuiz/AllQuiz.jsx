@@ -1,8 +1,7 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { withTranslation } from 'react-i18next'
-import { useEffect } from 'react'
 import { sysConfigdata } from 'src/store/reducers/settingsSlice'
 import { useSelector } from 'react-redux'
 import { Loadbadgedata } from 'src/store/reducers/badgesSlice'
@@ -16,26 +15,15 @@ import Breadcrumb from 'src/components/Common/Breadcrumb'
 
 const AllQuiz = () => {
   const router = useRouter()
-
   const userData = useSelector(state => state.User)
-
   const systemconfig = useSelector(sysConfigdata)
-
   const websettingsdata = useSelector(websettingsData)
 
   // quiz feature image
-  const quiz_zone_icon = websettingsdata && websettingsdata.quiz_zone_icon
-  const daily_quiz_icon = websettingsdata && websettingsdata.daily_quiz_icon
-  const true_false_icon = websettingsdata && websettingsdata.true_false_icon
-  const fun_learn_icon = websettingsdata && websettingsdata.fun_learn_icon
-  const self_challange_icon = websettingsdata && websettingsdata.self_challange_icon
-  const contest_play_icon = websettingsdata && websettingsdata.contest_play_icon
-  const one_one_battle_icon = websettingsdata && websettingsdata.one_one_battle_icon
-  const group_battle_icon = websettingsdata && websettingsdata.group_battle_icon
-  const audio_question_icon = websettingsdata && websettingsdata.audio_question_icon
-  const math_mania_icon = websettingsdata && websettingsdata.math_mania_icon
-  const exam_icon = websettingsdata && websettingsdata.exam_icon
-  const guess_the_word_icon = websettingsdata && websettingsdata.guess_the_word_icon
+  const quiz_zone_icon = websettingsdata?.quiz_zone_icon
+  const true_false_icon = websettingsdata?.true_false_icon
+  const self_challange_icon = websettingsdata?.self_challange_icon
+  const guess_the_word_icon = websettingsdata?.guess_the_word_icon
 
   // data show
   const [data, setData] = useState([
@@ -73,7 +61,6 @@ const AllQuiz = () => {
     }
   ])
 
-
   // redirect to page
   const redirectdata = data => {
     const isAuthenticated = userData.token
@@ -95,14 +82,6 @@ const AllQuiz = () => {
         dataProperty: "quizzonehide"
       },
       {
-        configProperty: 'daily_quiz_mode',
-        dataProperty: 'dailyquizhide'
-      },
-      {
-        configProperty: 'contest_mode',
-        dataProperty: 'contestplayhide'
-      },
-      {
         configProperty: 'true_false_mode',
         dataProperty: 'truefalsehide'
       },
@@ -111,36 +90,8 @@ const AllQuiz = () => {
         dataProperty: 'selfchallengehide'
       },
       {
-        configProperty: 'fun_n_learn_question',
-        dataProperty: 'funandlearnhide'
-      },
-      {
         configProperty: 'guess_the_word_question',
         dataProperty: 'guessthewordhide'
-      },
-      // {
-      //   configProperty: 'battle_mode_one',
-      //   dataProperty: 'battlequizhide'
-      // },
-      {
-        configProperty: 'battle_mode_group',
-        dataProperty: 'groupplayhide'
-      },
-      {
-        configProperty: 'audio_mode_question',
-        dataProperty: 'audioQuestionshide'
-      },
-      {
-        configProperty: 'maths_quiz_mode',
-        dataProperty: 'mathQuestionshide'
-      },
-      {
-        configProperty: 'exam_module',
-        dataProperty: 'examQuestionshide'
-      },
-      {
-        configProperty: 'battle_mode_random',
-        dataProperty: 'battle_Random_Questionshide'
       }
     ]
 
@@ -178,51 +129,15 @@ const AllQuiz = () => {
         }
       })
     }
-
   }, [userData])
 
-  // this is only for guess the word based on english language only.
-  // useEffect(() => {
-  //   if (systemconfig?.guess_the_word_question === '1') {
-  //     if (languages.code === 'en' || languages.code === 'en-GB') {
-  //       // Check if the quiz already exists in the data array
-  //       const quizExists = data.some(quiz => quiz.quizname === 'Guess The Word')
-
-  //       // If the quiz doesn't exist, add it to the data array
-  //       if (!quizExists) {
-  //         setData(prevData => [
-  //           ...prevData,
-  //           {
-  //             id: 4,
-  //             image: guess_the_word_icon,
-  //             quizname: 'Guess The Word',
-  //             url: '/quiz-play/guess-the-word',
-  //             guessthewordhide: '1'
-  //           }
-  //         ])
-  //       }
-  //     } else {
-  //       // Remove "Guess The Word" quiz from the data array
-  //       setData(prevData => prevData.filter(quiz => quiz.quizname !== 'Guess The Word'))
-  //     }
-  //   }
-  // }, [languages.code])
-
   useEffect(() => {
-    // disable battle if both one vs one and playwithfriend 
-    if (systemconfig.battle_mode_random === "0" && systemconfig.battle_mode_one === "0") {
-      setData(prevData => prevData.filter(quiz => quiz.quizname !== '1 v/s 1 Battle'))
-    }
-  }, [systemconfig])
-
-  useEffect(() => {
-    // clear local storage poins
+    // clear local storage points
     battleDataClear()
   }, [])
 
   return (
     <>
-      {/* <Meta /> */}
       <Breadcrumb showBreadcrumb={true} title={`${t('quiz')} ${t('play')}`} content={t('home')} contentTwo={`${t('quiz')} ${t('play')}`} />
       <div className='Quizzone my-5'>
         <div className='container'>
@@ -262,16 +177,11 @@ const AllQuiz = () => {
                 </li>
               ))}
             </ul>
-          )
-          }
+          )}
         </div>
       </div>
-
-      {/* <LearningFun img={bookImg} learingFunData={learingFunData} />
-
-      <FAQS faqsData={faqsData} /> */}
-
     </>
   )
 }
+
 export default withTranslation()(AllQuiz)

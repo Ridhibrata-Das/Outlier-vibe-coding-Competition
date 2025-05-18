@@ -22,14 +22,13 @@ const AboutUs = ({ t }) => {
             <div className='Instruction'>
                 <div className='container'>
                     <div className='row morphisam'>
-                        <div className='col-12'>
-                            <h2>About Us</h2>
-                            <p><strong>Developer:</strong> Ridhibrata Das</p>
-                            <p><strong>Email:</strong> ridhibratadas@gmail.com</p>
-                            <p><strong>Phone:</strong> +91 9733557339</p>
-                            <p><strong>Institution:</strong> Techno Main Salt Lake</p>
-                            <p>This software is a vibe coded project for the Outlier Vibe Coding Competition. The topic is <strong>EDUCATION</strong> - a Quiz app with a score at the end and a retry option. The platform is designed to make learning fun and interactive, allowing users to test their knowledge, view their scores, and try again to improve. Many more features and improvements are planned to enhance the educational experience. Thank you for visiting!</p>
-                        </div>
+                        {data ? (
+                            <div className='col-12 ' dangerouslySetInnerHTML={{ __html: purify.sanitize(data) }}></div>
+                        ) : (
+                            <div className='text-center text-white'>
+                                <Skeleton count={5} />
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

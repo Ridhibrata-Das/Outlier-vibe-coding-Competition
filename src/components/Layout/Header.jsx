@@ -49,9 +49,11 @@ const Header = () => {
     };
 
     const userData = useSelector(state => state.User)
-    // Use new SVG logo for both normal and sticky logos
-    const logoimage = '/logo.svg';
-    const stickylogoimage = '/logo.svg';
+    // sticky logo
+    const stickylogoimage = websettingsdata && websettingsdata.sticky_header_logo;
+
+    // logo
+    const logoimage = websettingsdata && websettingsdata.header_logo;
 
     const { auth } = FirebaseData()
 
