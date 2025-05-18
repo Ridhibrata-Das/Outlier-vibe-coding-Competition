@@ -21,37 +21,31 @@ const Layout = dynamic(() => import('src/components/Layout/Layout'), { ssr: fals
 
 const BookmarkPlay = ({ t }) => {
   const navigate = useRouter()
-
   const bookmarkId = useSelector(state => state.Bookmark.bookmarkId)
-  
   const [questions, setQuestions] = useState([{ id: '', isBookmarked: false }])
-
   const [showBackButton, setShowBackButton] = useState(false)
-
   const [currentQuestion, setCurrentQuestion] = useState(0)
-
   const [selectedAns, setSelectedAns] = useState()
-
   const [delay, setDelay] = useState(false)
-
+  const [error, setError] = useState(null)
   const systemconfig = useSelector(sysConfigdata)
-
   const child = useRef(null)
+  const TIMER_SECONDS = parseInt(systemconfig.quiz_zone_duration) || 30
 
-  const TIMER_SECONDS = parseInt(systemconfig.quiz_zone_duration)
   useEffect(() => {
     getNewQuestions()
   }, [])
 
   // bookmark api
-  const getNewQuestions = () => {
-    if (delay && questions.length < currentQuestion) {
-      setShowBackButton(true)
-    } else {
-
-      getbookmarkApi({
+  const getNewQuestions = async () => {
+    if (!bookmarkId) {
+      setError('No bookmark selected. Please select a bookmark to play.')
+      return
+    }
+    try {
+      await getbookmarkApi({
         type: bookmarkId,
-        onSuccess: response => {          
+        onSuccess: response => {
           let questions = response.data.map(data => ({
             ...data,
             isBookmarked: false,
@@ -59,54 +53,51 @@ const BookmarkPlay = ({ t }) => {
             isAnswered: false
           }))
           setQuestions(questions)
-          if (questions?.length === 0) {
-            toast.error(t('no_data_found'))
-            navigate.push('/')
+          if (!questions || questions.length === 0) {
+            setError('No questions found for this bookmark.')
           }
         },
         onError: error => {
+          setError('Failed to load questions. Please try again later.')
           toast.error(t('no_que_found'))
           console.log(error)
         }
       })
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again later.')
+      console.error(err)
     }
   }
 
-const nextQuestion = () =>{
-    // this is only for Question end
+  const nextQuestion = () => {
     setTimeout(() => {
       setCurrentQuestion(currentQuestion)
-      if (delay && questions.length == currentQuestion +1) {
+      if (delay && questions.length === currentQuestion + 1) {
         setShowBackButton(true)
       }
-    }, 500);
-
+    }, 500)
     setTimeout(() => {
       setCurrentQuestion(currentQuestion + 1)
+    }, 1000)
+  }
 
-    }, 1000);
-}
-    //answer option click
+  //answer option click
   const handleAnswerOptionClick = (selAns, score) => {
     nextQuestion()
     setSelectedAns(selAns)
-    child.current.resetTimer()
+    child.current && child.current.resetTimer()
   }
 
   const onTimerExpire = () => {
     nextQuestion()
-    child.current.resetTimer()
+    child.current && child.current.resetTimer()
   }
 
   useEffect(() => {
-
-
     setTimeout(() => {
       setDelay(true)
-    }, 2000);
-
+    }, 2000)
   }, [currentQuestion])
-
 
   //go back button
   const goBack = () => {
@@ -119,7 +110,6 @@ const nextQuestion = () =>{
     } else {
       return
     }
-
   }
   useEffect(() => {
     setAnswerStatusClass();
@@ -140,7 +130,12 @@ const nextQuestion = () =>{
         <div className='container'>
           <div className='row morphisam'>
             <div className='whitebackground'>
-              {(() => {
+              {error ? (
+                <div className='text-center text-danger' style={{ padding: 40 }}>
+                  <h4>{error}</h4>
+                  <button className='btn mt-3' onClick={() => navigate.push('/')}>{t('Back to Home')}</button>
+                </div>
+              ) : (() => {
                 if (showBackButton) {
                   return (
                     <div className='dashoptions flex-column'>
@@ -195,10 +190,8 @@ const nextQuestion = () =>{
               })()}
             </div>
           </div>
-
         </div>
       </div>
-      
     </Layout>
   )
 }
