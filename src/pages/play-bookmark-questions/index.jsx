@@ -12,13 +12,13 @@ import Question from 'src/components/Common/Question'
 import dynamic from 'next/dynamic'
 import QuestionMiddleSectionOptions from 'src/components/view/common/QuestionMiddleSectionOptions'
 import { showAnswerStatusClass } from 'src/utils'
-import Lottie from 'react-lottie-player'
 import bookmarkPlayEnd from 'src/components/view/common/bookmark_play_end.json'
 import Timer from 'src/components/Common/Timer'
 import AudioQuestionsDashboard from 'src/components/Quiz/AudioQuestions/AudioQuestionsDashboard'
 import GuessthewordQuestions from 'src/components/Quiz/Guesstheword/GuessthewordQuestions'
 import ClientOnly from 'src/components/Common/ClientOnly'
 const Layout = dynamic(() => import('src/components/Layout/Layout'), { ssr: false })
+const Lottie = dynamic(() => import('react-lottie-player'), { ssr: false })
 
 const BookmarkPlay = ({ t }) => {
   const navigate = useRouter()
