@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="50" viewBox="0 0 200 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF69B4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF1493;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <path d="M20 10C20 4.47715 24.4772 0 30 0H170C175.523 0 180 4.47715 180 10V40C180 45.5228 175.523 50 170 50H30C24.4772 50 20 45.5228 20 40V10Z" fill="url(#grad1)"/>
+  <path d="M40 15H160V35H40V15Z" fill="white" fill-opacity="0.1"/>
+  <text x="100" y="32" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">QuizForge</text>
+</svg> 

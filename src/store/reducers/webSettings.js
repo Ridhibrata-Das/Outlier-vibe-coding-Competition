@@ -5,7 +5,13 @@ import { store } from '../store'
 
 // state
 const initialState = {
-  data: [],
+  data: {
+    header_logo: '/images/logo.svg',
+    sticky_header_logo: '/images/logo.svg',
+    site_name: 'QuizForge',
+    site_description: 'Interactive Quiz Platform',
+    rtl_support: '0'
+  },
   loading: false,
   lastFetch: null
 }
@@ -20,6 +26,11 @@ export const userSlice = createSlice({
     },
     webSettingsSuccess: (web, action) => {
       let { data } = action.payload
+      // Always use our new logo regardless of API response
+      data.header_logo = initialState.data.header_logo
+      data.sticky_header_logo = initialState.data.sticky_header_logo
+      data.site_name = initialState.data.site_name
+      data.site_description = initialState.data.site_description
       web.data = data
       web.loading = false
       web.lastFetch = Date.now()
