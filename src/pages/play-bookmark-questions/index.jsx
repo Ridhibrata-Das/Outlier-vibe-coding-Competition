@@ -17,6 +17,7 @@ import bookmarkPlayEnd from 'src/components/view/common/bookmark_play_end.json'
 import Timer from 'src/components/Common/Timer'
 import AudioQuestionsDashboard from 'src/components/Quiz/AudioQuestions/AudioQuestionsDashboard'
 import GuessthewordQuestions from 'src/components/Quiz/Guesstheword/GuessthewordQuestions'
+import ClientOnly from 'src/components/Common/ClientOnly'
 const Layout = dynamic(() => import('src/components/Layout/Layout'), { ssr: false })
 
 const BookmarkPlay = ({ t }) => {
@@ -124,75 +125,77 @@ const BookmarkPlay = ({ t }) => {
     setQuestions(questions)
   }
   return (
-    <Layout>
-      <Breadcrumb title={t('bookmark_play')} content="" contentTwo="" />
-      <div className='dashboard'>
-        <div className='container'>
-          <div className='row morphisam'>
-            <div className='whitebackground'>
-              {error ? (
-                <div className='text-center text-danger' style={{ padding: 40 }}>
-                  <h4>{error}</h4>
-                  <button className='btn mt-3' onClick={() => navigate.push('/')}>{t('Back to Home')}</button>
-                </div>
-              ) : (() => {
-                if (showBackButton) {
-                  return (
-                    <div className='dashoptions flex-column'>
-                      <Lottie
-                        loop
-                        animationData={bookmarkPlayEnd}
-                        play
-                      />
-                      <div className='resettimer'>
-                        <button className='btn' onClick={goBack}>
-                          {t('Back')}
-                        </button>
+    <ClientOnly>
+      <Layout>
+        <Breadcrumb title={t('bookmark_play')} content="" contentTwo="" />
+        <div className='dashboard'>
+          <div className='container'>
+            <div className='row morphisam'>
+              <div className='whitebackground'>
+                {error ? (
+                  <div className='text-center text-danger' style={{ padding: 40 }}>
+                    <h4>{error}</h4>
+                    <button className='btn mt-3' onClick={() => navigate.push('/')}>{t('Back to Home')}</button>
+                  </div>
+                ) : (() => {
+                  if (showBackButton) {
+                    return (
+                      <div className='dashoptions flex-column'>
+                        <Lottie
+                          loop
+                          animationData={bookmarkPlayEnd}
+                          play
+                        />
+                        <div className='resettimer'>
+                          <button className='btn' onClick={goBack}>
+                            {t('Back')}
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  )
-                } else {
-                  return questions && questions?.length > 0 ? (<>
-                    <div className="bookmark_que_index">
-                      {currentQuestion + 1} - {questions?.length}
-                    </div>
+                    )
+                  } else {
+                    return questions && questions?.length > 0 ? (<>
+                      <div className="bookmark_que_index">
+                        {currentQuestion + 1} - {questions?.length}
+                      </div>
                       <div className='d-none'> <Timer ref={child} timerSeconds={TIMER_SECONDS} onTimerExpire={onTimerExpire} /></div>
-                    {bookmarkId === '1' && <QuestionMiddleSectionOptions
-                      questions={questions}
-                      currentQuestion={currentQuestion}
-                      setAnswerStatusClass={setAnswerStatusClass}
-                      handleAnswerOptionClick={handleAnswerOptionClick}
-                      probability={true}
-                      onQuestionEnd={onQuestionEnd}
-                      latex={true} />}
-                    {bookmarkId === '3' && <GuessthewordQuestions
-                          questions={questions}
-                          timerSeconds={TIMER_SECONDS}
-                          onOptionClick={handleAnswerOptionClick}
-                          showQuestions={false}
-                          showLifeLine={false}
-                          onQuestionEnd={onQuestionEnd}
-                          isBookmarkPlay={true}
-                        />}
-                    {bookmarkId === '4' && <AudioQuestionsDashboard
+                      {bookmarkId === '1' && <QuestionMiddleSectionOptions
+                        questions={questions}
+                        currentQuestion={currentQuestion}
+                        setAnswerStatusClass={setAnswerStatusClass}
+                        handleAnswerOptionClick={handleAnswerOptionClick}
+                        probability={true}
+                        onQuestionEnd={onQuestionEnd}
+                        latex={true} />}
+                      {bookmarkId === '3' && <GuessthewordQuestions
+                        questions={questions}
+                        timerSeconds={TIMER_SECONDS}
+                        onOptionClick={handleAnswerOptionClick}
+                        showQuestions={false}
+                        showLifeLine={false}
+                        onQuestionEnd={onQuestionEnd}
+                        isBookmarkPlay={true}
+                      />}
+                      {bookmarkId === '4' && <AudioQuestionsDashboard
                         questions={questions}
                         timerSeconds={TIMER_SECONDS}
                         onOptionClick={handleAnswerOptionClick}
                         isBookmarkPlay={true}
                         onQuestionEnd={onQuestionEnd}
                       />}
-                  </>) : (
-                    <div className='text-center text-white'>
-                      <Skeleton count={5} />
-                    </div>
-                  )
-                }
-              })()}
+                    </>) : (
+                      <div className='text-center text-white'>
+                        <Skeleton count={5} />
+                      </div>
+                    )
+                  }
+                })()}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </Layout>
+      </Layout>
+    </ClientOnly>
   )
 }
 export default withTranslation()(BookmarkPlay)
