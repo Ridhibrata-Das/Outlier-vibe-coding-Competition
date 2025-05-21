@@ -15,7 +15,7 @@ A modern, interactive quiz application developed for the Outlier vibe coding com
 - **Developer:** Ridhibrata Das
 - **Email:** ridhibratadas@gmail.com
 - **Phone:** +91 9733557339
-- **Location:** Techno Main Salt Lake
+- **Location:** Techno Main Salt Lake, Kolkata
 - **Competition:** Outlier vibe coding competition
 - **Topic:** EDUCATION - Quiz app with score at end and retry option
 
